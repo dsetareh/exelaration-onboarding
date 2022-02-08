@@ -3,32 +3,56 @@
 <head>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script src="./script.js"></script>
+    <style>
+        * {
+            font-family: Calibri, sans-serif;
+        }
+        span {
+            font-size: 1.1em;
+        }
+
+        #addmenu {
+            background-color: #adadad;
+            text-align: center;
+            line-height: 25px;
+            width: 200px;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        #selectmenu {
+            background-color: #adadad;
+            text-align: center;
+            line-height: 25px;
+            width: 200px;
+            display: inline-block;
+            vertical-align: top;
+        }
+    </style>
 </head>
 
 <body onload="startVue()">
     <div id='vuediv'>
-        <div id="countryMenu">
-            <span>Country: </span>
-            <select v-model="selectedCountry">
-                <option disabled value="">Select A Country</option>
-                <option v-for="country in orderedCountries" v-bind:value="country.code">{{country.name}}</option>
-            </select>
+        <div id="selectmenu">
+            <span style="font-weight: bold;">Browse Countries:</span>
+            <div id="countryMenu">
+                <span>Country: </span><br>
+                <select v-model="selectedCountry">
+                    <option disabled value="">Select A Country</option>
+                    <option v-for="country in orderedCountries" v-bind:value="country.code">{{country.name}}</option>
+                </select>
+            </div>
+
+            <div id="stateMenu" v-if="selectedCountry !== '' && states.length > 0">
+                <span>State: </span><br>
+                <select v-model="selectedState">
+                    <option disabled value="">Select A State</option>
+                    <option v-for="state in orderedStates" v-bind:value="state.name">{{state.name}}</option>
+                </select>
+            </div>
         </div>
 
-        <br>
-
-
-        <div id="stateMenu" v-if="selectedCountry !== '' && states.length > 0">
-            <span>State: </span>
-            <select v-model="selectedState">
-                <option disabled value="">Select A State</option>
-                <option v-for="state in orderedStates" v-bind:value="state.name">{{state.name}}</option>
-            </select>
-        </div>
-
-        <br>
-        <br>
-        <div id="addCountryMenu">
+        <div id="addmenu">
             <span style="font-weight: bold;">Add a country:</span>
             <br>
             <label>Country Name:</label><input v-model="submitCountryName" placeholder="TestCountry5"><br>
@@ -36,13 +60,12 @@
             <br>
             <button @click="addCountry">Add {{submitCountryName ? submitCountryName : "Country"}}</button>
         </div>
-        <br>
-        <div id="addStateMenu">
+        <div id="addmenu">
             <span style="font-weight: bold;">Add a state:</span>
             <br>
             <label>State Name:</label><input v-model="submitStateName" placeholder="TestState1"><br>
             <label>State Code:</label><input v-model="submitStateCode" placeholder="TS1"><br>
-            <span>Country: </span>
+            <span>Country: </span><br>
             <select v-model="submitOwnerID">
                 <option disabled value="">Select A Country</option>
                 <option v-for="country in orderedCountries" v-bind:value="country.id">{{country.name}}</option>
@@ -50,7 +73,7 @@
             <br>
             <button @click="addState">Add {{submitStateName ? submitStateName : "State"}}</button>
         </div>
-        
+
 
     </div>
 
