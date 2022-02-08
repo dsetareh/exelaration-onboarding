@@ -18,12 +18,27 @@
         <br>
 
 
-        <div id="stateMenu" v-if="selectedCountry !== ''">
+        <div id="stateMenu" v-if="selectedCountry !== '' && states.length > 0">
             <span>State: </span>
             <select v-model="selectedState">
                 <option disabled value="">Select A State</option>
                 <option v-for="state in states" v-bind:value="state.name">{{state.name}}</option>
             </select>
         </div>
+
+        <br>
+        <br>
+        <div id="addCountryMenu">
+            <span style="font-weight: bold;">Add a country:</span>
+            <br>
+            <label>Country Name:</label><input v-model="submitCountryName" placeholder="TestCountry5"><br>
+            <label>Country Code:</label><input v-model="submitCountryCode" placeholder="TC5"><br>
+            <label>Country ID:</label><input v-model="submitCountryID" placeholder="20">
+
+            <button @click="addCountry">Add Country</button>
+        </div>
+        
+
     </div>
+
 </body>
