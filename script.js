@@ -31,12 +31,28 @@ function startVue() {
         computed: {
             orderedCountries: function () {
                 return this.countries.sort((a, b) => {
-                    return a.name.localeCompare(b.name);
+                    let aname = a.name.toLowerCase();
+                    let bname = b.name.toLowerCase();
+                    if (aname < bname) {
+                        return -1;
+                    }
+                    if (aname > bname) {
+                        return 1;
+                    }
+                    return 0;
                 });
             },
             orderedStates: function () {
                 return this.states.sort((a, b) => {
-                    return a.name.localeCompare(b.name);
+                    let aname = a.name.toLowerCase();
+                    let bname = b.name.toLowerCase();
+                    if (aname < bname) {
+                        return -1;
+                    }
+                    if (aname > bname) {
+                        return 1;
+                    }
+                    return 0;
                 });
             }
         },
