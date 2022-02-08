@@ -24,11 +24,21 @@ function startVue() {
             states: [],
             submitCountryName: '',
             submitCountryCode: '',
-            submitCountryID: '',
-            submitStateID: '',
             submitStateName: '',
             submitStateCode: '',
             submitOwnerID: '',
+        },
+        computed: {
+            orderedCountries: function () {
+                return this.countries.sort((a, b) => {
+                    return a.name.localeCompare(b.name);
+                });
+            },
+            orderedStates: function () {
+                return this.states.sort((a, b) => {
+                    return a.name.localeCompare(b.name);
+                });
+            }
         },
         methods: {
             addCountry() {
@@ -40,7 +50,6 @@ function startVue() {
                     body: JSON.stringify({
                         name: this.submitCountryName,
                         code: this.submitCountryCode,
-                        id: this.submitCountryID
                     })
                 })
                     .then(response => response.json())
@@ -57,7 +66,6 @@ function startVue() {
                     body: JSON.stringify({
                         name: this.submitStateName,
                         code: this.submitStateCode,
-                        id: this.submitStateID,
                         countryId: this.submitOwnerID
                     })
                 })
@@ -71,6 +79,11 @@ function startVue() {
             selectedCountry: function (val) {
                 console.log(val);
                 // load states
+                if (val === '') {
+                    console.log("invalid api call caught");
+                    return;
+                }
+
                 fetch('https://xc-countries-api.herokuapp.com/api/countries/' + val + '/states/')
                     .then((response) => {
                         return response.json();

@@ -11,7 +11,7 @@
             <span>Country: </span>
             <select v-model="selectedCountry">
                 <option disabled value="">Select A Country</option>
-                <option v-for="country in countries" v-bind:value="country.code">{{country.name}}</option>
+                <option v-for="country in orderedCountries" v-bind:value="country.code">{{country.name}}</option>
             </select>
         </div>
 
@@ -22,7 +22,7 @@
             <span>State: </span>
             <select v-model="selectedState">
                 <option disabled value="">Select A State</option>
-                <option v-for="state in states" v-bind:value="state.name">{{state.name}}</option>
+                <option v-for="state in orderedStates" v-bind:value="state.name">{{state.name}}</option>
             </select>
         </div>
 
@@ -32,8 +32,7 @@
             <span style="font-weight: bold;">Add a country:</span>
             <br>
             <label>Country Name:</label><input v-model="submitCountryName" placeholder="TestCountry5"><br>
-            <label>Country Code:</label><input v-model="submitCountryCode" placeholder="TC5"><br>
-            <label>Country ID:</label><input v-model="submitCountryID" placeholder="20">
+            <label>Country Code:</label><input v-model="submitCountryCode" placeholder="TC5">
             <br>
             <button @click="addCountry">Add {{submitCountryName ? submitCountryName : "Country"}}</button>
         </div>
@@ -43,8 +42,11 @@
             <br>
             <label>State Name:</label><input v-model="submitStateName" placeholder="TestState1"><br>
             <label>State Code:</label><input v-model="submitStateCode" placeholder="TS1"><br>
-            <label>State ID:</label><input v-model="submitStateID" placeholder="79"><br>
-            <label>Country ID:</label><input v-model="submitOwnerID" placeholder="19">
+            <span>Country: </span>
+            <select v-model="submitOwnerID">
+                <option disabled value="">Select A Country</option>
+                <option v-for="country in orderedCountries" v-bind:value="country.id">{{country.name}}</option>
+            </select>
             <br>
             <button @click="addState">Add {{submitStateName ? submitStateName : "State"}}</button>
         </div>
