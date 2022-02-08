@@ -25,7 +25,10 @@ function startVue() {
             submitCountryName: '',
             submitCountryCode: '',
             submitCountryID: '',
-
+            submitStateID: '',
+            submitStateName: '',
+            submitStateCode: '',
+            submitOwnerID: '',
         },
         methods: {
             addCountry() {
@@ -38,6 +41,24 @@ function startVue() {
                         name: this.submitCountryName,
                         code: this.submitCountryCode,
                         id: this.submitCountryID
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        app.countries.push(data);
+                    })
+            },
+            addState() {
+                fetch('https://xc-countries-api.herokuapp.com/api/states/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: this.submitStateName,
+                        code: this.submitStateCode,
+                        id: this.submitStateID,
+                        countryId: this.submitOwnerID
                     })
                 })
                     .then(response => response.json())

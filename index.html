@@ -34,8 +34,19 @@
             <label>Country Name:</label><input v-model="submitCountryName" placeholder="TestCountry5"><br>
             <label>Country Code:</label><input v-model="submitCountryCode" placeholder="TC5"><br>
             <label>Country ID:</label><input v-model="submitCountryID" placeholder="20">
-
-            <button @click="addCountry">Add Country</button>
+            <br>
+            <button @click="addCountry">Add {{submitCountryName ? submitCountryName : "Country"}}</button>
+        </div>
+        <br>
+        <div id="addStateMenu">
+            <span style="font-weight: bold;">Add a state:</span>
+            <br>
+            <label>State Name:</label><input v-model="submitStateName" placeholder="TestState1"><br>
+            <label>State Code:</label><input v-model="submitStateCode" placeholder="TS1"><br>
+            <label>State ID:</label><input v-model="submitStateID" placeholder="79"><br>
+            <label>Country ID:</label><input v-model="submitOwnerID" placeholder="19">
+            <br>
+            <button @click="addState">Add {{submitStateName ? submitStateName : "State"}}</button>
         </div>
         
 
