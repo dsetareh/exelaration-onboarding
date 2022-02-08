@@ -7,18 +7,23 @@
 
 <body onload="startVue()">
     <div id='vuediv'>
-        <span>Country</span>
-        <select v-model="selected">
-            <option disabled value="">Select A Country</option>
-            <option v-for="country in countries">{{country.name}}</option>
-          </select><br>
-          <span v-if="selected !== ''">Selected: {{ selected }}</span>
+        <div id="countryMenu">
+            <span>Country: </span>
+            <select v-model="selectedCountry">
+                <option disabled value="">Select A Country</option>
+                <option v-for="country in countries" v-bind:value="country.code">{{country.name}}</option>
+            </select>
+        </div>
 
-          <br><br>
-            <div id="stateMenu" v-if="selected !== ''">
-                <select v-model="selected">
+        <br>
 
-                </select>
-            </div>
+
+        <div id="stateMenu" v-if="selectedCountry !== ''">
+            <span>State: </span>
+            <select v-model="selectedState">
+                <option disabled value="">Select A State</option>
+                <option v-for="state in states" v-bind:value="state.name">{{state.name}}</option>
+            </select>
+        </div>
     </div>
 </body>
