@@ -55,16 +55,16 @@
         <div id="addmenu">
             <span style="font-weight: bold;">Add a country:</span>
             <br>
-            <label>Country Name:</label><input v-model="submitCountryName" placeholder="TestCountry5"><br>
-            <label>Country Code:</label><input v-model="submitCountryCode" placeholder="TC5">
+            <label>Country Name:</label><input v-model="submitCountryName" placeholder="America"><br>
+            <label>Country Code:</label><input v-model="submitCountryCode" placeholder="USA">
             <br>
             <button @click="addCountry">Add {{submitCountryName ? submitCountryName : "Country"}}</button>
         </div>
         <div id="addmenu">
             <span style="font-weight: bold;">Add a state:</span>
             <br>
-            <label>State Name:</label><input v-model="submitStateName" placeholder="TestState1"><br>
-            <label>State Code:</label><input v-model="submitStateCode" placeholder="TS1"><br>
+            <label>State Name:</label><input v-model="submitStateName" placeholder="Virginia"><br>
+            <label>State Code:</label><input v-model="submitStateCode" placeholder="VA"><br>
             <span>Country: </span><br>
             <select v-model="submitOwnerID">
                 <option disabled value="">Select A Country</option>

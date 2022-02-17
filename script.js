@@ -1,6 +1,9 @@
 var app;
 
-//const API_URL = 'http://localho.st:8080/api/';
+// Personal API URL
+//const API_URL = 'https://localhost:8080/api/';
+
+// Official API URL
 const API_URL = 'https://xc-countries-api.herokuapp.com/api/';
 
 function getData() {
