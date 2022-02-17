@@ -1,7 +1,9 @@
 var app;
 
+const API_URL = 'https://xc-countries-api.herokuapp.com/api/';
+
 function getData() {
-    fetch('https://xc-countries-api.herokuapp.com/api/countries/')
+    fetch(API_URL + 'countries/')
         .then((response) => {
             return response.json();
         })
@@ -58,7 +60,7 @@ function startVue() {
         },
         methods: {
             addCountry() {
-                fetch('https://xc-countries-api.herokuapp.com/api/countries/', {
+                fetch(API_URL + 'countries/', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -74,7 +76,7 @@ function startVue() {
                     })
             },
             addState() {
-                fetch('https://xc-countries-api.herokuapp.com/api/states/', {
+                fetch(API_URL + 'states/', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -100,7 +102,7 @@ function startVue() {
                     return;
                 }
 
-                fetch('https://xc-countries-api.herokuapp.com/api/countries/' + val + '/states/')
+                fetch(API_URL + 'countries/' + val + '/states/')
                     .then((response) => {
                         return response.json();
                     }
