@@ -1,5 +1,6 @@
 var app;
 
+//const API_URL = 'http://localho.st:8080/api/';
 const API_URL = 'https://xc-countries-api.herokuapp.com/api/';
 
 function getData() {
@@ -88,9 +89,6 @@ function startVue() {
                     })
                 })
                     .then(response => response.json())
-                    .then(data => {
-                        app.countries.push(data);
-                    })
             }
         },
         watch: { // watch for changes in the selected country
