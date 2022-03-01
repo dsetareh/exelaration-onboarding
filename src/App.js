@@ -1,24 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import './App.css';
 import { CountrySelect } from './components/CountrySelect';
 
-const API_URL = 'https://xc-countries-api.herokuapp.com/api/countries';
-export class App extends React.Component {
+const API_URL = 'https://xc-countries-api.herokuapp.com/api/';
+class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      countryData: {}
+      countryData: [],
+      stateData: []
     };
   }
 
   componentDidMount() {
-    fetch(API_URL)
+    fetch(API_URL + 'countries')
       .then((res) => res.json())
       .then((json) => {
         this.setState({
           countryData: json
         });
         console.log(this.state.countryData);
+      })
+
+      fetch(API_URL + 'states')
+      .then((res) => res.json())
+      .then((json) => {
+        this.setState({
+          stateData: json
+        });
+        console.log(this.state.stateData);
       })
 
   }
@@ -28,8 +38,7 @@ export class App extends React.Component {
         <header className="App-header">
           <p>Country API</p>
         </header>
-        <p>{JSON.stringify(this.state.countryData)}</p>
-        <CountrySelect />
+        <CountrySelect stateData={this.state.stateData} countryData={this.state.countryData}/>
       </div>
     );
   }
