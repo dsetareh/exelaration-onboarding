@@ -3,23 +3,20 @@ import PropTypes from 'prop-types';
 export class StateSelect extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { selectedState: '' };
-
         this.handleChange = this.handleChange.bind(this);
     }
 
     handleChange(event) {
-        this.setState({ selectedState: event.target.value });
+        this.props.onStateChange(event.target.value);
     }
 
     render() {
         return (
             <div>
-                Selected State: {this.state.selectedState}<br/>
                 {
-                    <select id="stateList" onChange={this.handleChange} value={this.state.selectedState}>
-                        <option disabled value="">Select A State</option>
-                        {this.props.stateData.map(state => <option key={state.code}>{state.name}</option>)}
+                    <select id="stateList" defaultValue={0} onChange={this.handleChange} value={this.props.selectedState}>
+                        <option disabled value={0}>Select A State</option>
+                        {this.props.stateData.map(state => <option key={state.id} value={state.id}>{state.name}</option>)}
                     </select>
                 }
             </div>
@@ -29,5 +26,6 @@ export class StateSelect extends React.Component {
 
 
 StateSelect.propTypes = {
-    stateData: PropTypes.array.isRequired
+    stateData: PropTypes.array.isRequired,
+    onStateChange: PropTypes.func.isRequired
 };

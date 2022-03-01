@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { CountrySelect } from './components/CountrySelect';
+import { SubmitNewState } from './components/SubmitNewState';
 
 const API_URL = 'https://xc-countries-api.herokuapp.com/api/';
 class App extends React.Component {
@@ -19,16 +19,14 @@ class App extends React.Component {
         this.setState({
           countryData: json
         });
-        console.log(this.state.countryData);
       })
 
-      fetch(API_URL + 'states')
+    fetch(API_URL + 'states')
       .then((res) => res.json())
       .then((json) => {
         this.setState({
           stateData: json
         });
-        console.log(this.state.stateData);
       })
 
   }
@@ -38,7 +36,9 @@ class App extends React.Component {
         <header className="App-header">
           <p>Country API</p>
         </header>
-        <CountrySelect stateData={this.state.stateData} countryData={this.state.countryData}/>
+        <div className="input-area">
+          <SubmitNewState stateData={this.state.stateData} countryData={this.state.countryData} />
+        </div>
       </div>
     );
   }
