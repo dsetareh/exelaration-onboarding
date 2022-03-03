@@ -1,31 +1,31 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 
-export class AddNewCountry extends React.Component {
-    constructor(props) {
+interface IAddNewCountryProps {
+    apiUrl: string;
+}
+
+interface IAddNewCountryState {
+    name: string;
+    code: string;
+}
+
+export class AddNewCountry extends React.Component<IAddNewCountryProps, IAddNewCountryState> {
+    constructor(props: IAddNewCountryProps) {
         super(props);
         this.state = {
             name: '',
             code: ''
         };
-
-        this.handleNameChange = this.handleNameChange.bind(this);
-        this.handleCodeChange = this.handleCodeChange.bind(this);
-
-        this.handleSubmit = this.handleSubmit.bind(this);
     }
-
-    handleNameChange(event) {
+    handleNameChange = (event:React.ChangeEvent<HTMLInputElement>)  => {
         this.setState({ name: event.target.value });
     }
-
-    handleCodeChange(event) {
+    handleCodeChange = (event:React.ChangeEvent<HTMLInputElement>) =>{
         this.setState({ code: event.target.value });
     }
-
-    handleSubmit(event) {
-        fetch(this.props.API_URL + 'countries/', {
+    handleSubmit(event:React.FormEvent<HTMLFormElement>) {
+        fetch(this.props.apiUrl + 'countries/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -60,7 +60,3 @@ export class AddNewCountry extends React.Component {
         );
     }
 }
-
-AddNewCountry.propTypes = {
-    API_URL: PropTypes.string.isRequired
-};

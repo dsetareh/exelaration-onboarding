@@ -1,37 +1,38 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-
 import { CountrySelect } from './CountrySelect';
 
-export class AddNewState extends React.Component {
-    constructor(props) {
+interface IAddNewStateProps {
+    countryData: ICountry[];
+    apiUrl: string;
+}
+
+interface IAddNewStateState {
+    name: string;
+    code: string;
+    selectedCountry: number;
+}
+
+export class AddNewState extends React.Component<IAddNewStateProps, IAddNewStateState> {
+    constructor(props: IAddNewStateProps) {
         super(props);
         this.state = {
             name: '',
             code: '',
             selectedCountry: 0
         };
-
-        this.onCountryChange = this.onCountryChange.bind(this);
-        this.handleNameChange = this.handleNameChange.bind(this);
-        this.handleCodeChange = this.handleCodeChange.bind(this);
-
-        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    onCountryChange(id) {
+    onCountryChange(id: number) {
         this.setState({ selectedCountry: id });
     }
-    handleNameChange(event) {
+    handleNameChange(event: React.ChangeEvent<HTMLInputElement>) {
         this.setState({ name: event.target.value });
     }
-
-    handleCodeChange(event) {
+    handleCodeChange(event: React.ChangeEvent<HTMLInputElement>) {
         this.setState({ code: event.target.value });
     }
-
-    handleSubmit(event) {
-        fetch(this.props.API_URL + 'states/', {
+    handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        fetch(this.props.apiUrl + 'states/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -59,7 +60,6 @@ export class AddNewState extends React.Component {
                         <input type="text" value={this.state.code} onChange={this.handleCodeChange} /><br />
                     </label>
                     {this.state.selectedCountry === 0 ? <h5>Select a country: </h5> : <h5>Selected: {this.state.selectedCountry} </h5>}
-
                     <CountrySelect onCountryChange={this.onCountryChange} countryData={this.props.countryData} />
                     <input type="submit" value="Submit" />
                 </form>
@@ -67,8 +67,3 @@ export class AddNewState extends React.Component {
         );
     }
 }
-
-AddNewState.propTypes = {
-    countryData: PropTypes.array.isRequired,
-    API_URL: PropTypes.string.isRequired
-};

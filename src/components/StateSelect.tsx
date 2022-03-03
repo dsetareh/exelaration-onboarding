@@ -1,12 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-export class StateSelect extends React.Component {
-    constructor(props) {
-        super(props);
-        this.handleChange = this.handleChange.bind(this);
-    }
 
-    handleChange(event) {
+interface IStateSelectProps {
+    stateData: IState[];
+    onStateChange: Function;
+    selectedState?: number;
+}
+
+
+
+export class StateSelect extends React.Component<IStateSelectProps, {}> {
+
+    handleChange(event: React.ChangeEvent<HTMLSelectElement>) {
         this.props.onStateChange(event.target.value);
     }
 
@@ -23,9 +27,3 @@ export class StateSelect extends React.Component {
         );
     }
 }
-
-
-StateSelect.propTypes = {
-    stateData: PropTypes.array.isRequired,
-    onStateChange: PropTypes.func.isRequired
-};
