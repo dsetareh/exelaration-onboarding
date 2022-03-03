@@ -10,7 +10,7 @@ interface IStateSelectProps {
 
 export class StateSelect extends React.Component<IStateSelectProps, {}> {
 
-    handleChange(event: React.ChangeEvent<HTMLSelectElement>) {
+    handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         this.props.onStateChange(event.target.value);
     }
 

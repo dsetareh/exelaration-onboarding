@@ -22,16 +22,16 @@ export class AddNewState extends React.Component<IAddNewStateProps, IAddNewState
         };
     }
 
-    onCountryChange(id: number) {
+    onCountryChange = (id: number)  => {
         this.setState({ selectedCountry: id });
     }
-    handleNameChange(event: React.ChangeEvent<HTMLInputElement>) {
+    handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({ name: event.target.value });
     }
-    handleCodeChange(event: React.ChangeEvent<HTMLInputElement>) {
+    handleCodeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({ code: event.target.value });
     }
-    handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    handleSubmit = (event: React.FormEvent<HTMLFormElement>)  => {
         fetch(this.props.apiUrl + 'states/', {
             method: 'POST',
             headers: {

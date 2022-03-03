@@ -5,13 +5,14 @@ import { Utils } from '../Utils';
 
 interface ILocationBrowserProps {
     apiUrl: string;
-    stateData: IState[];
     countryData: ICountry[];
 }
 
 interface ILocationBrowserState {
     selectedCountry: number;
     selectedState: number;
+    stateData: IState[];
+    
 }
 
 export class LocationBrowser extends React.Component<ILocationBrowserProps, ILocationBrowserState> {
@@ -19,13 +20,29 @@ export class LocationBrowser extends React.Component<ILocationBrowserProps, ILoc
         super(props);
         this.state = {
             selectedCountry: 0,
-            selectedState: 0
+            selectedState: 0,
+            stateData: []
         };
     }
-    onCountryChange(id:number) {
+    onCountryChange = async (id:number) => {
         this.setState({ selectedCountry: id });
+        // get code
+        let countryCode = this.props.countryData.find(c => c.id == id)?.code; //? === didnt work here?????
+        // sanity check
+        if (!countryCode) {
+            console.log("No country code found for id: " + id);
+            return;
+        }
+        // get states
+        let response = await fetch(`${this.props.apiUrl}countries/${countryCode}/states`);
+        let states: IState[] = await response.json();
+        states.sort(Utils.compareLocation);
+        this.setState({
+            stateData: states,
+            selectedState: 0 // reset selected state
+        });
     }
-    onStateChange(id:number) {
+    onStateChange = (id:number) => {
         this.setState({ selectedState: id });
     }
     render() {
@@ -35,7 +52,7 @@ export class LocationBrowser extends React.Component<ILocationBrowserProps, ILoc
                 {this.state.selectedCountry === 0 ? <h5>Select a country: </h5> : <h5>Selected: {this.state.selectedCountry} </h5>}
                 <CountrySelect onCountryChange={this.onCountryChange} countryData={this.props.countryData} />
                 {this.state.selectedCountry === 0 ? '' : this.state.selectedState === 0 ? <h5>Select a state: </h5> : <h5>Selected: {this.state.selectedState} </h5>}
-                {this.state.selectedCountry === 0 ? '' : <StateSelect onStateChange={this.onStateChange} stateData={this.props.stateData.filter((state) => state.countryId === this.state.selectedCountry)} />}
+                {this.state.selectedCountry === 0 ? '' : <StateSelect onStateChange={this.onStateChange} stateData={this.state.stateData} />}
             </div>
         );
     }

@@ -12,37 +12,27 @@ const API_URL = 'https://xc-countries-api.herokuapp.com/api/';
 
 interface IStateData {
   countryData: ICountry[];
-  stateData: IState[];
 }
 
 class App extends React.Component<any, IStateData> {
   constructor(props: any) {
     super(props);
     this.state = {
-      countryData: [],
-      stateData: []
+      countryData: []
     };
   }
 
-  
+
 
   // grab api data and sort it before passing it down to components
-  async componentDidMount() {
+  componentDidMount = async () => {
     let response = await fetch(`${API_URL}countries`);
     let countries: ICountry[] = await response.json()
     countries.sort(Utils.compareLocation);
     this.setState({ countryData: countries });
 
-    fetch(API_URL + 'states')
-      .then((res) => res.json())
-      .then((json) => {
-        json.sort(Utils.compareLocation);
-        this.setState({
-          stateData: json
-        });
-      })
-
   }
+
   render() {
     return (
       <div className="App">
@@ -50,7 +40,7 @@ class App extends React.Component<any, IStateData> {
           <p>Country API</p>
         </header>
         <div className="input-area">
-          <LocationBrowser apiUrl={API_URL} stateData={this.state.stateData} countryData={this.state.countryData} />
+          <LocationBrowser apiUrl={API_URL} countryData={this.state.countryData} />
           <AddNewCountry apiUrl={API_URL} />
           <AddNewState apiUrl={API_URL} countryData={this.state.countryData} />
         </div>

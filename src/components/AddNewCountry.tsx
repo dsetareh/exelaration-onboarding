@@ -24,7 +24,7 @@ export class AddNewCountry extends React.Component<IAddNewCountryProps, IAddNewC
     handleCodeChange = (event:React.ChangeEvent<HTMLInputElement>) =>{
         this.setState({ code: event.target.value });
     }
-    handleSubmit(event:React.FormEvent<HTMLFormElement>) {
+    handleSubmit = (event:React.FormEvent<HTMLFormElement>) => {
         fetch(this.props.apiUrl + 'countries/', {
             method: 'POST',
             headers: {
