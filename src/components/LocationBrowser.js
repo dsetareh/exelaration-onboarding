@@ -5,7 +5,7 @@ import { StateSelect } from './StateSelect';
 import { CountrySelect } from './CountrySelect';
 
 
-export class SubmitNewState extends React.Component {
+export class LocationBrowser extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -23,7 +23,7 @@ export class SubmitNewState extends React.Component {
     }
     render() {
         return (
-            <div className="stateSubmit">
+            <div className="databox">
                 <h4>Browse Countries and States:</h4>
                 {this.state.selectedCountry === 0 ? <h5>Select a country: </h5> : <h5>Selected: {this.state.selectedCountry} </h5>}
 
@@ -37,7 +37,7 @@ export class SubmitNewState extends React.Component {
 }
 
 
-SubmitNewState.propTypes = {
+LocationBrowser.propTypes = {
     countryData: PropTypes.array.isRequired,
     stateData: PropTypes.array.isRequired
 };

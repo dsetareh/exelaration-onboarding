@@ -11,13 +11,14 @@ h5 {
   font-weight: 100;
 }
 
-.stateSubmit {
+.databox {
   text-align: center;
   max-width: fit-content;
   padding: 30px;
   background-color: darkslategrey;
   color: white;
   border-radius: 10px;
+  margin: 10px;
 }
 
 .input-area {
