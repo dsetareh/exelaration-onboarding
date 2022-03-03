@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/exelaration-onboarding/static/css/main.ec658d3c.css",
+    "main.js": "/exelaration-onboarding/static/js/main.5f8d360f.js",
+    "static/js/787.47ed96d1.chunk.js": "/exelaration-onboarding/static/js/787.47ed96d1.chunk.js",
+    "index.html": "/exelaration-onboarding/index.html",
+    "main.ec658d3c.css.map": "/exelaration-onboarding/static/css/main.ec658d3c.css.map",
+    "main.5f8d360f.js.map": "/exelaration-onboarding/static/js/main.5f8d360f.js.map",
+    "787.47ed96d1.chunk.js.map": "/exelaration-onboarding/static/js/787.47ed96d1.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ec658d3c.css",
+    "static/js/main.5f8d360f.js"
+  ]
+}
