@@ -2,12 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export class CountrySelect extends React.Component {
-    constructor(props) {
-        super(props);
-        this.handleChange = this.handleChange.bind(this);
-    }
 
-    handleChange(event) {
+    handleChange = (event) => {
         this.props.onCountryChange(event.target.value);
     }
 

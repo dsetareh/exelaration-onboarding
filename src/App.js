@@ -5,7 +5,7 @@ import { AddNewCountry } from './components/AddNewCountry';
 import { AddNewState } from './components/AddNewState';
 
 
-const API_URL = 'https://xc-countries-api.herokuapp.com/api/'; //! should be made a global import, reused in some components
+const API_URL = 'https://xc-countries-api.herokuapp.com/api/'; 
 
 class App extends React.Component {
   constructor(props) {
