@@ -1,6 +1,5 @@
 import React from 'react';
-import { StateSelect } from './StateSelect';
-import { CountrySelect } from './CountrySelect';
+import { LocationSelect } from './LocationSelect';
 import { Utils } from '../Utils';
 
 interface ILocationBrowserProps {
@@ -50,9 +49,9 @@ export class LocationBrowser extends React.Component<ILocationBrowserProps, ILoc
             <div className="databox">
                 <h4>Browse Countries and States:</h4>
                 {this.state.selectedCountry === 0 ? <h5>Select a country: </h5> : <h5>Selected: {this.state.selectedCountry} </h5>}
-                <CountrySelect onCountryChange={this.onCountryChange} countryData={this.props.countryData} />
+                <LocationSelect onLocationChange={this.onCountryChange} locationData={this.props.countryData} locationType="country" />
                 {this.state.selectedCountry === 0 ? '' : this.state.selectedState === 0 ? <h5>Select a state: </h5> : <h5>Selected: {this.state.selectedState} </h5>}
-                {this.state.selectedCountry === 0 ? '' : <StateSelect onStateChange={this.onStateChange} stateData={this.state.stateData} />}
+                {this.state.selectedCountry === 0 ? '' : <LocationSelect onLocationChange={this.onStateChange} locationData={this.state.stateData} locationType="state"/>}
             </div>
         );
     }
