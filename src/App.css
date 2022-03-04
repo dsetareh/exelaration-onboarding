@@ -11,6 +11,7 @@ h5 {
   font-weight: 100;
 }
 
+
 .databox {
   text-align: center;
   max-width: fit-content;
@@ -31,6 +32,8 @@ h5 {
 
 .App {
   text-align: center;
+  position: relative;
+  width: fit-content;
 }
 
 .App-logo {
