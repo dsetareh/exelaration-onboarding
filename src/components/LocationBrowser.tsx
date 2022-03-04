@@ -51,7 +51,7 @@ export class LocationBrowser extends React.Component<ILocationBrowserProps, ILoc
                 {this.state.selectedCountry === 0 ? <h5>Select a country: </h5> : <h5>Selected: {this.state.selectedCountry} </h5>}
                 <LocationSelect onLocationChange={this.onCountryChange} locationData={this.props.countryData} locationType="country" />
                 {this.state.selectedCountry === 0 ? '' : this.state.selectedState === 0 ? <h5>Select a state: </h5> : <h5>Selected: {this.state.selectedState} </h5>}
-                {this.state.selectedCountry === 0 ? '' : <LocationSelect onLocationChange={this.onStateChange} locationData={this.state.stateData} locationType="state"/>}
+                {this.state.selectedCountry !== 0 && <LocationSelect onLocationChange={this.onStateChange} locationData={this.state.stateData} locationType="state"/>}
             </div>
         );
     }
