@@ -1,5 +1,6 @@
 import React from 'react';
 import { LocationSelect } from './LocationSelect';
+import { Card } from 'antd';
 
 interface IAddNewStateProps {
     countryData: ICountry[];
@@ -50,8 +51,7 @@ export class AddNewState extends React.Component<IAddNewStateProps, IAddNewState
 
     render() {
         return (
-            <div className="databox">
-                <h4>Add New State</h4>
+            <Card className="databox" title="Add New State">
                 <form onSubmit={this.handleSubmit}>
                     <label>
                         <h5>Name:</h5>
@@ -63,7 +63,7 @@ export class AddNewState extends React.Component<IAddNewStateProps, IAddNewState
                     <LocationSelect onLocationChange={this.onCountryChange} locationData={this.props.countryData} locationType="country" />
                     <input type="submit" value="Submit" />
                 </form>
-            </div>
+            </Card>
         );
     }
 }

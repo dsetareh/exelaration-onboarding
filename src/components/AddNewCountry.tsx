@@ -1,4 +1,5 @@
 import React from 'react';
+import { Card } from 'antd';
 
 
 interface IAddNewCountryProps {
@@ -45,8 +46,7 @@ export class AddNewCountry extends React.Component<IAddNewCountryProps, IAddNewC
 
     render() {
         return (
-            <div className="databox">
-                <h4>Add New Country</h4>
+            <Card className="databox" title="Add New Country">
                 <form onSubmit={this.handleSubmit}>
                     <label>
                         <h5>Country Name:</h5>
@@ -56,7 +56,7 @@ export class AddNewCountry extends React.Component<IAddNewCountryProps, IAddNewC
                     </label>
                     <input type="submit" value="Submit" />
                 </form>
-            </div>
+            </Card>
         );
     }
 }

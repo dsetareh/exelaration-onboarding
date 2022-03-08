@@ -1,6 +1,7 @@
 import React from 'react';
 import { LocationSelect } from './LocationSelect';
 import { Utils } from '../Utils';
+import { Card } from 'antd';
 
 interface ILocationBrowserProps {
     apiUrl: string;
@@ -46,11 +47,10 @@ export class LocationBrowser extends React.Component<ILocationBrowserProps, ILoc
     }
     render() {
         return (
-            <div className="databox">
-                <h4>Browse Countries and States:</h4>
+            <Card className="databox" title="Browse Countries and States">
                 <LocationSelect onLocationChange={this.onCountryChange} locationData={this.props.countryData} locationType="country"  />
                 {this.state.stateData.length === 0 ? '' : <LocationSelect onLocationChange={this.onStateChange} locationData={this.state.stateData} locationType="state"/>}
-            </div>
+            </Card>
         );
     }
 }

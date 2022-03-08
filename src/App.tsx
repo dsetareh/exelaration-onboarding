@@ -4,6 +4,7 @@ import { LocationBrowser } from './components/LocationBrowser';
 import { AddNewCountry } from './components/AddNewCountry';
 import { AddNewState } from './components/AddNewState';
 import { Utils } from './Utils';
+import { Carousel } from 'antd';
 
 
 const API_URL = 'https://xc-countries-api.herokuapp.com/api/';
@@ -39,11 +40,11 @@ class App extends React.Component<any, IStateData> {
         <header className="App-header">
           <p>Country API</p>
         </header>
-        <div className="input-area">
+        <Carousel className="input-area">
           <LocationBrowser apiUrl={API_URL} countryData={this.state.countryData} />
           <AddNewCountry apiUrl={API_URL} />
-          <AddNewState apiUrl={API_URL} countryData={this.state.countryData} />
-        </div>
+          <AddNewState apiUrl={API_URL} countryData={this.state.countryData} />          
+        </Carousel>
       </div>
     );
   }
