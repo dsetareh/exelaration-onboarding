@@ -23,7 +23,7 @@ export class LocationSelect extends React.Component<ILocationSelectProps, {}> {
     render() {
         return (
             <div>
-                <Select defaultValue="0" onChange={this.handleChange} allowClear>
+                <Select defaultValue="0" onChange={this.handleChange}>
                     <Option value="0" disabled>Select a {this.props.locationType}</Option>
                     {this.props.locationData.map((location: ILocation) => {
                         console.log(this.props.locationData);

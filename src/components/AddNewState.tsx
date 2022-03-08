@@ -1,6 +1,6 @@
 import React from 'react';
 import { LocationSelect } from './LocationSelect';
-import { Card } from 'antd';
+import { Card, Form, Input, Button } from 'antd';
 
 interface IAddNewStateProps {
     countryData: ICountry[];
@@ -23,7 +23,7 @@ export class AddNewState extends React.Component<IAddNewStateProps, IAddNewState
         };
     }
 
-    onCountryChange = (id: number)  => {
+    onCountryChange = (id: number) => {
         this.setState({ selectedCountry: id });
     }
     handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,7 +32,7 @@ export class AddNewState extends React.Component<IAddNewStateProps, IAddNewState
     handleCodeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({ code: event.target.value });
     }
-    handleSubmit = (event: React.FormEvent<HTMLFormElement>)  => {
+    handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         fetch(this.props.apiUrl + 'states/', {
             method: 'POST',
             headers: {
@@ -52,17 +52,39 @@ export class AddNewState extends React.Component<IAddNewStateProps, IAddNewState
     render() {
         return (
             <Card className="databox" title="Add New State">
-                <form onSubmit={this.handleSubmit}>
-                    <label>
-                        <h5>Name:</h5>
-                        <input type="text" value={this.state.name} onChange={this.handleNameChange} /><br />
-                        <h5>Code:</h5>
-                        <input type="text" value={this.state.code} onChange={this.handleCodeChange} /><br />
-                    </label>
-                    {this.state.selectedCountry === 0 ? <h5>Select a country: </h5> : <h5>Selected: {this.state.selectedCountry} </h5>}
-                    <LocationSelect onLocationChange={this.onCountryChange} locationData={this.props.countryData} locationType="country" />
-                    <input type="submit" value="Submit" />
-                </form>
+                <Form onFinish={this.handleSubmit}>
+                    <Form.Item
+                        label="Name"
+                        name="name"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input a State Name!',
+                            },
+                        ]}>
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
+                        label="Code"
+                        name="code"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input a State Code!',
+                            },
+                        ]}>
+                        <Input />
+                    </Form.Item>
+                    <Form.Item label="Country">
+                        <LocationSelect onLocationChange={this.onCountryChange} locationData={this.props.countryData} locationType="country" />
+                    </Form.Item>
+                    <Form.Item>
+                    <Button type="primary" htmlType="submit">
+          Submit
+        </Button>
+                    </Form.Item>
+
+                </Form>
             </Card>
         );
     }
