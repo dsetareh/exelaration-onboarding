@@ -1,6 +1,7 @@
 import React from 'react';
-import {  Menu, Dropdown  } from 'antd';
+import { Select } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
+const { Option } = Select;
 
 interface ILocationSelectProps {
     locationData: ILocation[];
@@ -10,43 +11,29 @@ interface ILocationSelectProps {
     selectedLocation?: number;
 }
 
-interface ILocationSelectState {
-    currentLocationName: string;
-}
 
-export class LocationSelect extends React.Component<ILocationSelectProps, ILocationSelectState> {
-    constructor(props:ILocationSelectProps) {
-        super(props);
-        this.state = {
-            currentLocationName: 'Select a ' + this.props.locationType
-        };
+
+export class LocationSelect extends React.Component<ILocationSelectProps, {}> {
+
+
+    handleChange = (value: string) => {
+        this.props.onLocationChange(value);
     }
-
-    handleChange = (value: any) => {
-        this.props.onLocationChange(value.key);
-        this.setState({ currentLocationName: value.key });
-    }
-
-    menu = (
-        <Menu onClick={this.handleChange}>
-            {this.props.locationData.map((location: ILocation) => {
-                return (
-                    <Menu.Item key={location.id} >
-                        <a href="#">{location.id} | {location.code} | {location.name}</a>
-                    </Menu.Item>
-                );
-            })}
-        </Menu>
-            )
 
     render() {
         return (
             <div>
-                <Dropdown overlay={this.menu}>
-                    <a className="ant-dropdown-link" href="#" onClick={e => e.preventDefault()}>
-                        {this.state.currentLocationName} <DownOutlined />
-                    </a>
-                </Dropdown>
+                <Select defaultValue="0" onChange={this.handleChange} allowClear>
+                    <Option value="0" disabled>Select a {this.props.locationType}</Option>
+                    {this.props.locationData.map((location: ILocation) => {
+                        console.log(this.props.locationData);
+                        return (
+                            <Option value={location.id} >
+                                {location.id} | {location.code} | {location.name}
+                            </Option>
+                        );
+                    })}
+                </Select>
 
             </div>
         );

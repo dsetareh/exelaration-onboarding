@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css';
+import './App.less';
 import { LocationBrowser } from './components/LocationBrowser';
 import { AddNewCountry } from './components/AddNewCountry';
 import { AddNewState } from './components/AddNewState';

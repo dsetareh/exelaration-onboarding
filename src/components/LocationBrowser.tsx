@@ -48,10 +48,8 @@ export class LocationBrowser extends React.Component<ILocationBrowserProps, ILoc
         return (
             <div className="databox">
                 <h4>Browse Countries and States:</h4>
-                {this.state.selectedCountry === 0 ? <h5>Select a country: </h5> : <h5>Selected: {this.state.selectedCountry} </h5>}
-                <LocationSelect onLocationChange={this.onCountryChange} locationData={this.props.countryData} locationType="country" />
-                {this.state.selectedCountry === 0 ? '' : this.state.selectedState === 0 ? <h5>Select a state: </h5> : <h5>Selected: {this.state.selectedState} </h5>}
-                {this.state.selectedCountry === 0 ? '' : <LocationSelect onLocationChange={this.onStateChange} locationData={this.state.stateData} locationType="state"/>}
+                <LocationSelect onLocationChange={this.onCountryChange} locationData={this.props.countryData} locationType="country"  />
+                {this.state.stateData.length === 0 ? '' : <LocationSelect onLocationChange={this.onStateChange} locationData={this.state.stateData} locationType="state"/>}
             </div>
         );
     }
