@@ -1,3 +1,5 @@
+@import '~antd/dist/antd.css';
+
 body {
   background-color: #282c34;
   font-family: "Courier New", Courier, monospace;

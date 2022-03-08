@@ -1,4 +1,6 @@
 import React from 'react';
+import {  Menu, Dropdown  } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
 
 interface ILocationSelectProps {
     locationData: ILocation[];
@@ -8,20 +10,44 @@ interface ILocationSelectProps {
     selectedLocation?: number;
 }
 
-export class LocationSelect extends React.Component<ILocationSelectProps, {}> {
-    handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        this.props.onLocationChange(event.target.value);
+interface ILocationSelectState {
+    currentLocationName: string;
+}
+
+export class LocationSelect extends React.Component<ILocationSelectProps, ILocationSelectState> {
+    constructor(props:ILocationSelectProps) {
+        super(props);
+        this.state = {
+            currentLocationName: 'Select a ' + this.props.locationType
+        };
     }
+
+    handleChange = (value: any) => {
+        this.props.onLocationChange(value.key);
+        this.setState({ currentLocationName: value.key });
+    }
+
+    menu = (
+        <Menu onClick={this.handleChange}>
+            {this.props.locationData.map((location: ILocation) => {
+                return (
+                    <Menu.Item key={location.id} >
+                        <a href="#">{location.id} | {location.code} | {location.name}</a>
+                    </Menu.Item>
+                );
+            })}
+        </Menu>
+            )
 
     render() {
         return (
             <div>
-               {
-                    <select id='${this.props.locationType}List' defaultValue={0} onChange={this.handleChange} value={this.props.selectedLocation}>
-                        <option disabled value={0}>Select a {this.props.locationType}</option>
-                        {this.props.locationData.map(location => <option key={location.id} value={location.id}>{location.name}</option>)}
-                    </select>
-                }
+                <Dropdown overlay={this.menu}>
+                    <a className="ant-dropdown-link" href="#" onClick={e => e.preventDefault()}>
+                        {this.state.currentLocationName} <DownOutlined />
+                    </a>
+                </Dropdown>
+
             </div>
         );
     }
