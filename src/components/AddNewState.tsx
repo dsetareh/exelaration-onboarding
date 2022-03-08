@@ -11,6 +11,8 @@ interface IAddNewStateState {
     name: string;
     code: string;
     selectedCountry: number;
+    validStateName: boolean;
+    validStateCode: boolean;
 }
 
 export class AddNewState extends React.Component<IAddNewStateProps, IAddNewStateState> {
@@ -19,7 +21,9 @@ export class AddNewState extends React.Component<IAddNewStateProps, IAddNewState
         this.state = {
             name: '',
             code: '',
-            selectedCountry: 0
+            selectedCountry: 0,
+            validStateName: false,
+            validStateCode: false
         };
     }
 
@@ -32,7 +36,9 @@ export class AddNewState extends React.Component<IAddNewStateProps, IAddNewState
     handleCodeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({ code: event.target.value });
     }
+
     handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        //! handle validation here?
         fetch(this.props.apiUrl + 'states/', {
             method: 'POST',
             headers: {
@@ -79,9 +85,9 @@ export class AddNewState extends React.Component<IAddNewStateProps, IAddNewState
                         <LocationSelect onLocationChange={this.onCountryChange} locationData={this.props.countryData} locationType="country" />
                     </Form.Item>
                     <Form.Item>
-                    <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
+                        <Button type="primary" htmlType="submit">
+                            Submit
+                        </Button>
                     </Form.Item>
 
                 </Form>
