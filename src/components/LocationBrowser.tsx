@@ -1,6 +1,6 @@
 import React from 'react';
-import { LocationSelect } from './LocationSelect';
 import { Utils } from '../Utils';
+import DropDown from './Dropdown';
 
 interface ILocationBrowserProps {
     apiUrl: string;
@@ -8,7 +8,7 @@ interface ILocationBrowserProps {
 }
 
 interface ILocationBrowserState {
-    selectedCountry: number;
+    selectedCountry: string;
     selectedState: number;
     stateData: IState[];
     
@@ -18,18 +18,15 @@ export class LocationBrowser extends React.Component<ILocationBrowserProps, ILoc
     constructor(props:ILocationBrowserProps) {
         super(props);
         this.state = {
-            selectedCountry: 0,
+            selectedCountry: '',
             selectedState: 0,
             stateData: []
         };
     }
-    onCountryChange = async (id:number) => {
-        this.setState({ selectedCountry: id });
-        // get code
-        let countryCode = this.props.countryData.find(c => c.id == id)?.code; //? === didnt work here?????
-        // sanity check
+    onCountryChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const countryCode = event.target.value;
         if (!countryCode) {
-            console.log("No country code found for id: " + id);
+            console.log("No country code given");
             return;
         }
         // get states
@@ -38,20 +35,21 @@ export class LocationBrowser extends React.Component<ILocationBrowserProps, ILoc
         states.sort(Utils.compareLocation);
         this.setState({
             stateData: states,
+            selectedCountry: countryCode,
             selectedState: 0 // reset selected state
         });
     }
-    onStateChange = (id:number) => {
-        this.setState({ selectedState: id });
+    onStateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        this.setState({ selectedState: parseInt(event.target.value) });
     }
     render() {
         return (
             <div className="databox">
                 <h4>Browse Countries and States:</h4>
-                {this.state.selectedCountry === 0 ? <h5>Select a country: </h5> : <h5>Selected: {this.state.selectedCountry} </h5>}
-                <LocationSelect onLocationChange={this.onCountryChange} locationData={this.props.countryData} locationType="country" />
-                {this.state.selectedCountry === 0 ? '' : this.state.selectedState === 0 ? <h5>Select a state: </h5> : <h5>Selected: {this.state.selectedState} </h5>}
-                {this.state.selectedCountry !== 0 && <LocationSelect onLocationChange={this.onStateChange} locationData={this.state.stateData} locationType="state"/>}
+                {this.state.selectedCountry === '' ? <h5>Select a country: </h5> : <h5>Selected: {this.state.selectedCountry} </h5>}
+                <DropDown onChange={this.onCountryChange} data={this.props.countryData} valueField="code" textField={(country: ILocation) => `${country.code}: ${country.name}`} style={{color: "red"}}/>
+                {this.state.selectedCountry === '' ? '' : this.state.selectedState === 0 ? <h5>Select a state: </h5> : <h5>Selected: {this.state.selectedState} </h5>}
+                {this.state.selectedCountry !== '' && <DropDown onChange={this.onStateChange} data={this.state.stateData} valueField="id" textField="name" />}
             </div>
         );
     }

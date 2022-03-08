@@ -1,5 +1,4 @@
 import React from 'react';
-import { LocationSelect } from './LocationSelect';
 
 interface IAddNewStateProps {
     countryData: ICountry[];
@@ -60,7 +59,7 @@ export class AddNewState extends React.Component<IAddNewStateProps, IAddNewState
                         <input type="text" value={this.state.code} onChange={this.handleCodeChange} /><br />
                     </label>
                     {this.state.selectedCountry === 0 ? <h5>Select a country: </h5> : <h5>Selected: {this.state.selectedCountry} </h5>}
-                    <LocationSelect onLocationChange={this.onCountryChange} locationData={this.props.countryData} locationType="country" />
+                    {/* <LocationSelect onLocationChange={this.onCountryChange} locationData={this.props.countryData} locationType="country" /> */}
                     <input type="submit" value="Submit" />
                 </form>
             </div>
