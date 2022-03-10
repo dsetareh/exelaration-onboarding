@@ -1,64 +1,50 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { LocationSelect } from './LocationSelect';
 import { Card, Form, Input, Button } from 'antd';
 
-interface IAddNewStateProps {
-    countryData: ICountry[];
-    apiUrl: string;
-}
+import { observer } from 'mobx-react-lite'
+import { useContext } from 'react'
+import { configStore } from '../stores'
 
-interface IAddNewStateState {
-    name: string;
-    code: string;
-    selectedCountry: number;
-    validStateName: boolean;
-    validStateCode: boolean;
-}
+const AddNewState = observer(() => {
 
-export class AddNewState extends React.Component<IAddNewStateProps, IAddNewStateState> {
-    constructor(props: IAddNewStateProps) {
-        super(props);
-        this.state = {
-            name: '',
-            code: '',
-            selectedCountry: 0,
-            validStateName: false,
-            validStateCode: false
-        };
+    const countryStore = useContext(configStore);
+
+    const [name, setName] = useState('');
+    const [code, setCode] = useState('');
+    const [selectedCountry, setSelectedCountry] = useState(0);
+
+    const onCountryChange = (id: number) => {
+        setSelectedCountry(id);
+    }
+    const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setName(event.target.value);
+    }
+    const handleCodeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setCode(event.target.value);
     }
 
-    onCountryChange = (id: number) => {
-        this.setState({ selectedCountry: id });
-    }
-    handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({ name: event.target.value });
-    }
-    handleCodeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({ code: event.target.value });
-    }
-
-    handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         //! handle validation here?
-        fetch(this.props.apiUrl + 'states/', {
+        fetch(countryStore.apiUrl + 'states/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                name: this.state.name,
-                code: this.state.code,
-                countryId: this.state.selectedCountry
+                name: name,
+                code: code,
+                countryId: selectedCountry
             })
         })
             .then(response => response.json())
-        alert('A state was submitted: ' + this.state.name + ' ' + this.state.code + ' ' + this.state.selectedCountry);
+        alert('A state was submitted: ' + name + ' ' + code + ' ' + selectedCountry);
         event.preventDefault(); //! prevents page reload
     }
 
-    render() {
         return (
             <Card className="databox" title="Add New State">
-                <Form onFinish={this.handleSubmit}>
+                <Form onFinish={handleSubmit}>
                     <Form.Item
                         label="Name"
                         name="name"
@@ -82,7 +68,7 @@ export class AddNewState extends React.Component<IAddNewStateProps, IAddNewState
                         <Input />
                     </Form.Item>
                     <Form.Item label="Country">
-                        <LocationSelect onLocationChange={this.onCountryChange} locationData={this.props.countryData} locationType="country" />
+                        <LocationSelect onLocationChange={onCountryChange} locationData={countryStore.countries} locationType="country" />
                     </Form.Item>
                     <Form.Item>
                         <Button type="primary" htmlType="submit">
@@ -93,5 +79,6 @@ export class AddNewState extends React.Component<IAddNewStateProps, IAddNewState
                 </Form>
             </Card>
         );
-    }
-}
+});
+
+export default AddNewState;

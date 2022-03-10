@@ -1,82 +1,80 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Form, Input, Button } from 'antd';
 
+import { observer } from 'mobx-react-lite'
+import { useContext } from 'react'
+import { configStore } from '../stores'
 
-interface IAddNewCountryProps {
-    apiUrl: string;
-}
 
-interface IAddNewCountryState {
-    name: string;
-    code: string;
-}
+const AddNewCountry = observer(() => {
 
-export class AddNewCountry extends React.Component<IAddNewCountryProps, IAddNewCountryState> {
-    constructor(props: IAddNewCountryProps) {
-        super(props);
-        this.state = {
-            name: '',
-            code: ''
-        };
+    const countryStore = useContext(configStore);
+
+    const [name, setName] = useState('');
+    const [code, setCode] = useState('');
+
+
+
+    const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setName(event.target.value);
     }
-    handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({ name: event.target.value });
+    const handleCodeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setCode(event.target.value);
     }
-    handleCodeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({ code: event.target.value });
-    }
-    handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        fetch(this.props.apiUrl + 'countries/', {
+
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        fetch(countryStore.apiUrl + 'countries/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                name: this.state.name,
-                code: this.state.code,
+                name: name,
+                code: code,
             })
         })
             .then(response => response.json())
             .then(data => {
                 //! push new country up to parent here eventually
             })
-        alert('A country was submitted: ' + this.state.name + ' ' + this.state.code);
+        alert('A country was submitted: ' + name + ' ' + code);
         event.preventDefault(); //! prevents page reload
     }
 
-    render() {
-        return (
-            <Card className="databox" title="Add New Country">
-                <Form onFinish={this.handleSubmit}>
-                    <Form.Item
-                        label="Name"
-                        name="name"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input a Country Name!',
-                            },
-                        ]}>
-                        <Input />
-                    </Form.Item>
-                    <Form.Item
-                        label="Code"
-                        name="code"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input a Country Code!',
-                            },
-                        ]}>
-                        <Input />
-                    </Form.Item>
-                    <Form.Item>
-                        <Button type="primary" htmlType="submit">
-                            Submit
-                        </Button>
-                    </Form.Item>
-                </Form>
-            </Card>
-        );
-    }
-}
+    return (
+        <Card className="databox" title="Add New Country">
+            <Form onFinish={handleSubmit}>
+                <Form.Item
+                    label="Name"
+                    name="name"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input a Country Name!',
+                        },
+                    ]}
+                    >
+                    <Input  onChange={handleNameChange}/>
+                </Form.Item>
+                <Form.Item
+                    label="Code"
+                    name="code"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input a Country Code!',
+                        },
+                    ]}>
+                    <Input  onChange={handleCodeChange}/>
+                </Form.Item>
+                <Form.Item>
+                    <Button type="primary" htmlType="submit">
+                        Submit
+                    </Button>
+                </Form.Item>
+            </Form>
+        </Card>
+    );
+});
+
+export default AddNewCountry;
