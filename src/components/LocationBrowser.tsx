@@ -2,10 +2,11 @@ import React from 'react';
 import { LocationSelect } from './LocationSelect';
 import { Utils } from '../Utils';
 import { Card } from 'antd';
+import { CountryStore } from '../stores/CountryStore';
 
 interface ILocationBrowserProps {
     apiUrl: string;
-    countryData: ICountry[];
+    countryStore: CountryStore;
 }
 
 interface ILocationBrowserState {
@@ -27,7 +28,7 @@ export class LocationBrowser extends React.Component<ILocationBrowserProps, ILoc
     onCountryChange = async (id:number) => {
         this.setState({ selectedCountry: id });
         // get code
-        let countryCode = this.props.countryData.find(c => c.id == id)?.code; //? === didnt work here?????
+        let countryCode = this.props.countryStore.allCountries.find(c => c.id == id)?.code; 
         // sanity check
         if (!countryCode) {
             console.log("No country code found for id: " + id);
@@ -48,7 +49,7 @@ export class LocationBrowser extends React.Component<ILocationBrowserProps, ILoc
     render() {
         return (
             <Card className="databox" title="Browse Countries and States">
-                <LocationSelect onLocationChange={this.onCountryChange} locationData={this.props.countryData} locationType="country"  />
+                <LocationSelect onLocationChange={this.onCountryChange} locationData={this.props.countryStore.allCountries} locationType="country"  />
                 {this.state.stateData.length === 0 ? '' : <LocationSelect onLocationChange={this.onStateChange} locationData={this.state.stateData} locationType="state"/>}
             </Card>
         );

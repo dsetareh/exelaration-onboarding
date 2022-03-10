@@ -26,9 +26,8 @@ export class LocationSelect extends React.Component<ILocationSelectProps, {}> {
                 <Select defaultValue="0" onChange={this.handleChange}>
                     <Option value="0" disabled>Select a {this.props.locationType}</Option>
                     {this.props.locationData.map((location: ILocation) => {
-                        console.log(this.props.locationData);
                         return (
-                            <Option value={location.id} >
+                            <Option key={location.id} value={location.id} >
                                 {location.id} | {location.code} | {location.name}
                             </Option>
                         );

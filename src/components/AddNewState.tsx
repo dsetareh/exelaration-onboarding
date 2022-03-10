@@ -1,9 +1,10 @@
 import React from 'react';
 import { LocationSelect } from './LocationSelect';
 import { Card, Form, Input, Button } from 'antd';
+import { CountryStore } from '../stores/CountryStore';
 
 interface IAddNewStateProps {
-    countryData: ICountry[];
+    countryStore: CountryStore;
     apiUrl: string;
 }
 
@@ -82,7 +83,7 @@ export class AddNewState extends React.Component<IAddNewStateProps, IAddNewState
                         <Input />
                     </Form.Item>
                     <Form.Item label="Country">
-                        <LocationSelect onLocationChange={this.onCountryChange} locationData={this.props.countryData} locationType="country" />
+                        <LocationSelect onLocationChange={this.onCountryChange} locationData={this.props.countryStore.allCountries} locationType="country" />
                     </Form.Item>
                     <Form.Item>
                         <Button type="primary" htmlType="submit">
