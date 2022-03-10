@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card } from 'antd';
+import { Card, Form, Input, Button } from 'antd';
 
 
 interface IAddNewCountryProps {
@@ -19,13 +19,13 @@ export class AddNewCountry extends React.Component<IAddNewCountryProps, IAddNewC
             code: ''
         };
     }
-    handleNameChange = (event:React.ChangeEvent<HTMLInputElement>)  => {
+    handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({ name: event.target.value });
     }
-    handleCodeChange = (event:React.ChangeEvent<HTMLInputElement>) =>{
+    handleCodeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({ code: event.target.value });
     }
-    handleSubmit = (event:React.FormEvent<HTMLFormElement>) => {
+    handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         fetch(this.props.apiUrl + 'countries/', {
             method: 'POST',
             headers: {
@@ -47,15 +47,35 @@ export class AddNewCountry extends React.Component<IAddNewCountryProps, IAddNewC
     render() {
         return (
             <Card className="databox" title="Add New Country">
-                <form onSubmit={this.handleSubmit}>
-                    <label>
-                        <h5>Country Name:</h5>
-                        <input type="text" value={this.state.name} onChange={this.handleNameChange} /><br />
-                        <h5>Country Code:</h5>
-                        <input type="text" value={this.state.code} onChange={this.handleCodeChange} /><br />
-                    </label>
-                    <input type="submit" value="Submit" />
-                </form>
+                <Form onFinish={this.handleSubmit}>
+                    <Form.Item
+                        label="Name"
+                        name="name"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input a Country Name!',
+                            },
+                        ]}>
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
+                        label="Code"
+                        name="code"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input a Country Code!',
+                            },
+                        ]}>
+                        <Input />
+                    </Form.Item>
+                    <Form.Item>
+                        <Button type="primary" htmlType="submit">
+                            Submit
+                        </Button>
+                    </Form.Item>
+                </Form>
             </Card>
         );
     }
