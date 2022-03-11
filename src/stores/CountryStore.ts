@@ -1,40 +1,29 @@
-import { autorun, action, observable, configure } from 'mobx'
+import { autorun, action, observable, configure, makeObservable, runInAction } from 'mobx'
 
-configure({ enforceActions: 'always' })
 
 export class CountryStore {
 
     constructor() {
-        // autorun(this.save)
-        this.loadFromApi() // Loads countries from api
+        // !!!!! this not being here was why locationBrowser was not rerendered on store change !!!!!
+        makeObservable(this, {
+            apiUrl: false,
+            countries: observable,
+            loadFromApi: action,
+            addCountry: action
+        }); 
     }
 
-    @observable apiUrl: string = 'https://xc-countries-api.herokuapp.com/api/'
+    apiUrl: string = 'https://xc-countries-api.herokuapp.com/api/'
+    countries: ICountry[] = []
 
-    @observable countries: ICountry[] = []
-
-    @action
     loadFromApi = async () => {
         const response = await fetch(this.apiUrl + 'countries')
         const data = await response.json()
-        this.countries = data
+        runInAction(() => {
+            this.countries = data
+        });
     }
-
-    // private save = () => {
-    //     console.log('Saving countries to local storage')
-    //     localStorage.setItem('countries', JSON.stringify(this.countries))
-
-    // }
-
-    @action
-    private load = () => {
-        const data = localStorage.getItem('countries')
-        if (data) {
-            this.countries = JSON.parse(data)
-        }
-    }
-
-    @action
+    
     addCountry = async (country: ICountry) => {
         const response = await fetch(this.apiUrl + 'countries', {
             method: 'POST',
@@ -44,7 +33,7 @@ export class CountryStore {
             body: JSON.stringify(country)
         })
         const data = await response.json()
-        this.countries.push(data)
+        this.countries =  [...this.countries, data];
     }
 
 }
