@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Card, Form, Input, Button } from 'antd';
 
 import { observer } from 'mobx-react-lite'
@@ -23,20 +23,7 @@ const AddNewCountry = observer(() => {
     }
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        fetch(countryStore.apiUrl + 'countries/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                name: name,
-                code: code,
-            })
-        })
-            .then(response => response.json())
-            .then(data => {
-                //! push new country up to parent here eventually
-            })
+        countryStore.addCountry({name: name, code: code});
         alert('A country was submitted: ' + name + ' ' + code);
         event.preventDefault(); //! prevents page reload
     }

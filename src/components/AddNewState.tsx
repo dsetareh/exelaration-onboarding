@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { LocationSelect } from './LocationSelect';
 import { Card, Form, Input, Button } from 'antd';
 
@@ -54,7 +54,7 @@ const AddNewState = observer(() => {
                                 message: 'Please input a State Name!',
                             },
                         ]}>
-                        <Input />
+                        <Input onChange={handleNameChange}/>
                     </Form.Item>
                     <Form.Item
                         label="Code"
@@ -65,7 +65,7 @@ const AddNewState = observer(() => {
                                 message: 'Please input a State Code!',
                             },
                         ]}>
-                        <Input />
+                        <Input onChange={handleCodeChange}/>
                     </Form.Item>
                     <Form.Item label="Country">
                         <LocationSelect onLocationChange={onCountryChange} locationData={countryStore.countries} locationType="country" />

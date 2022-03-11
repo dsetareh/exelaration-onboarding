@@ -11,6 +11,7 @@ import { observer } from 'mobx-react-lite'
 
 
 const App = observer(() => {
+  
 
 
   return (
@@ -23,9 +24,6 @@ const App = observer(() => {
         <AddNewCountry />
         <AddNewState />
       </Space>
-
-
-
     </div>
   );
 
