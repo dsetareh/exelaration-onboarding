@@ -42,43 +42,51 @@ const AddNewState = observer(() => {
         event.preventDefault(); //! prevents page reload
     }
 
-        return (
-            <Card className="databox" title="Add New State">
-                <Form onFinish={handleSubmit}>
-                    <Form.Item
-                        label="Name"
-                        name="name"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input a State Name!',
-                            },
-                        ]}>
-                        <Input onChange={handleNameChange}/>
-                    </Form.Item>
-                    <Form.Item
-                        label="Code"
-                        name="code"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input a State Code!',
-                            },
-                        ]}>
-                        <Input onChange={handleCodeChange}/>
-                    </Form.Item>
-                    <Form.Item label="Country">
-                        <LocationSelect onLocationChange={onCountryChange} locationData={countryStore.countries} locationType="country" />
-                    </Form.Item>
-                    <Form.Item>
-                        <Button type="primary" htmlType="submit">
-                            Submit
-                        </Button>
-                    </Form.Item>
+    return (
+        <Card className="databox" title="Add New State">
+            <Form onFinish={handleSubmit}>
+                <Form.Item
+                    label="Name"
+                    name="name"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input a State Name!',
+                        },
+                    ]}>
+                    <Input onChange={handleNameChange} />
+                </Form.Item>
+                <Form.Item
+                    label="Code"
+                    name="code"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input a State Code!',
+                        },
+                    ]}>
+                    <Input onChange={handleCodeChange} />
+                </Form.Item>
+                <Form.Item
+                    label="Country"
+                    name="country"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please select a Country!',
+                        },
+                    ]}>
+                    <LocationSelect onRefreshRequest={countryStore.loadFromApi} onLocationChange={onCountryChange} locationData={countryStore.countries} locationType="country" />
+                </Form.Item>
+                <Form.Item>
+                    <Button type="primary" htmlType="submit">
+                        Submit
+                    </Button>
+                </Form.Item>
 
-                </Form>
-            </Card>
-        );
+            </Form>
+        </Card>
+    );
 });
 
 export default AddNewState;

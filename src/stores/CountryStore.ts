@@ -13,15 +13,13 @@ export class CountryStore {
         }); 
     }
 
-
-
     apiUrl: string = 'https://xc-countries-api.herokuapp.com/api/'
     lastApiRequest: number = 0;
     countries: ICountry[] = []
 
     loadFromApi = async () => {
         // check whether there has been an api req in the last minute
-        if (Date.now() - this.lastApiRequest < 5000) {
+        if (Date.now() - this.lastApiRequest < 60000) {
             return;
         }
         // set lastApiRequest to now
