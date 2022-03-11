@@ -45,7 +45,7 @@ const LocationBrowser = observer(() => {
 
     return (
         <Card className="databox" title="Browse Countries and States">
-            <LocationSelect onLocationChange={onCountryChange} locationData={countryStore.countries} locationType="country" />
+            <LocationSelect onRefreshRequest={countryStore.loadFromApi} onLocationChange={onCountryChange} locationData={countryStore.countries} locationType="country" />
             {stateData.length === 0 ? '' : <LocationSelect onLocationChange={()=>{}} locationData={stateData} locationType="state" />}
         </Card>
     );

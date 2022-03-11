@@ -1,43 +1,55 @@
-@import '~antd/dist/antd.less';
-
+@import "~antd/dist/antd.less";
 
 body {
   background-color: #282c34;
   font-family: "Courier New", Courier, monospace;
 }
 
+.ant-card {
+  border-radius: 0;
+  border: 0;
+  width: 500px;
+}
 
 .ant-select {
   padding-bottom: 10px;
-  width: 400px;
-}
-.ant-select-selection {
-  background-color: grey;
-  width: 400px;
+  width: 300px;
 }
 
+.ant-page-header-heading-sub-title, .ant-page-header-heading-title {
+  color: #ffffff;
+}
+
+.ant-row {
+  white-space: nowrap;
+  width: 400px;
+}
 
 h5 {
-  color:#ffffff;
+  color: #ffffff;
   font-size: 20px;
   margin-top: 10px;
   margin-bottom: 10px;
   font-weight: 100;
 }
 
+.ant-card-head {
+  font-weight: bold;
+  color: #ffffff;
+  font-size: 20px;
+}
 .ant-card-head-title {
   font-weight: bold;
-  color:#ffffff;
+  color: #ffffff;
   font-size: 20px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  padding: 6px 0;
 }
 
 .databox {
   text-align: center;
   width: fit-content;
   margin: auto;
-  padding: 30px;
+  padding: 10px;
   background-color: darkslategrey;
   color: rgb(0, 0, 0);
   border-radius: 10px;
@@ -49,7 +61,7 @@ h5 {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 30px;
+  margin-top: 10px;
 }
 
 .App {
@@ -66,7 +78,6 @@ h5 {
     animation: App-logo-spin infinite 20s linear;
   }
 }
-
 
 .App-header {
   background-color: #282c34;

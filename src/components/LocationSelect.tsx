@@ -1,23 +1,49 @@
 import React from 'react';
 import { Select } from 'antd';
+import { ReloadOutlined } from '@ant-design/icons'
+
 const { Option } = Select;
+
 
 interface ILocationSelectProps {
     locationData: ILocation[];
     onLocationChange: Function;
+    onRefreshRequest?: Function;
     locationType: string;
 
     selectedLocation?: number;
 }
 
 
+interface ILocationSelectState {
+    spin: boolean;
+}
 
-export class LocationSelect extends React.Component<ILocationSelectProps, {}> {
+
+
+export class LocationSelect extends React.Component<ILocationSelectProps, ILocationSelectState> {
+    constructor(props: ILocationSelectProps) {
+        super(props);
+        this.state = {
+            spin: false
+        };
+    }
 
 
     handleChange = (value: string) => {
         this.props.onLocationChange(value);
     }
+
+    handleRefreshRequest = () => {
+        if (this.props.onRefreshRequest) {
+            this.props.onRefreshRequest();
+            this.setState({spin: true});
+            setTimeout(() => {
+                this.setState({spin: false});
+            }, 1000); // 1 second spin regardless of anything
+        }
+    }
+
 
     render() {
         return (
@@ -32,6 +58,9 @@ export class LocationSelect extends React.Component<ILocationSelectProps, {}> {
                         );
                     })}
                 </Select>
+                {
+                    this.props.onRefreshRequest ? <ReloadOutlined spin={this.state.spin} onClick={this.handleRefreshRequest} /> : ''
+                }
             </div>
         );
     }

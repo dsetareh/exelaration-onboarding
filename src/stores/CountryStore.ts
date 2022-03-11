@@ -21,11 +21,11 @@ export class CountryStore {
 
     loadFromApi = async () => {
         // check whether there has been an api req in the last minute
-        // if (Date.now() - this.lastApiRequest < 60000) {
-        //     return;
-        // }
-        // // set lastApiRequest to now
-        // this.lastApiRequest = Date.now();
+        if (Date.now() - this.lastApiRequest < 5000) {
+            return;
+        }
+        // set lastApiRequest to now
+        this.lastApiRequest = Date.now();
 
 
 
