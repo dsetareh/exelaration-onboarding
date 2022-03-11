@@ -4,9 +4,16 @@ import './App.less';
 import LocationBrowser from './components/LocationBrowser';
 import AddNewCountry from './components/AddNewCountry';
 import AddNewState from './components/AddNewState';
-import { Space, PageHeader, Menu } from 'antd';
+import { PageHeader, Menu } from 'antd';
 
 import { observer } from 'mobx-react-lite'
+
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Link,
+} from "react-router-dom";
 
 import {
   MenuUnfoldOutlined,
@@ -34,39 +41,48 @@ const App = observer(() => {
         className="site-page-header"
         title="CountryAPI"
         subTitle="Browse and submit countries and states"
-        backIcon={collapsed ? <MenuUnfoldOutlined/> : <MenuFoldOutlined/>}
+        backIcon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
         onBack={toggleCollapsed}
       />
 
-
+<BrowserRouter>
       <div style={{ width: 256 }}>
         <Menu
           defaultSelectedKeys={['1']}
           defaultOpenKeys={['sub1']}
           mode="inline"
-          theme="dark"
+          theme="light"
           inlineCollapsed={collapsed}
         >
           <Menu.Item key="1" icon={<GlobalOutlined />}>
-            Location Browser
+            <Link to="/">
+              <span>Location Browser</span>
+            </Link>
           </Menu.Item>
           <SubMenu key="sub1" icon={<FlagOutlined />} title="Add new locations">
-            <Menu.Item key="2">Countries</Menu.Item>
-            <Menu.Item key="3">States</Menu.Item>
+            <Menu.Item key="2">
+              <Link to="/add/country">
+                <span>Countries</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="3">
+              <Link to="/add/state">
+                <span>States</span>
+              </Link>
+            </Menu.Item>
           </SubMenu>
         </Menu>
       </div>
 
 
+      
+        <Routes>
+          <Route path="/" element={<LocationBrowser />} />
+          <Route path="add/country" element={<AddNewCountry />} />
+          <Route path="add/state" element={<AddNewState />} />
+        </Routes>
+      </BrowserRouter>
 
-
-
-
-      <Space direction="horizontal" wrap>
-        <LocationBrowser />
-        <AddNewCountry />
-        <AddNewState />
-      </Space>
     </div>
   );
 
