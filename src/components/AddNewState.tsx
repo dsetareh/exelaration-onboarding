@@ -24,6 +24,15 @@ const AddNewState = observer(() => {
         setCode(event.target.value);
     }
 
+    const isSelectionValid = () => {
+        if (selectedCountry === 0) {
+            return Promise.reject('Please select a Country.');
+        }
+        else {
+            return Promise.resolve();
+        }
+    };
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         //! handle validation here?
         fetch(countryStore.apiUrl + 'states/', {
@@ -38,8 +47,6 @@ const AddNewState = observer(() => {
             })
         })
             .then(response => response.json())
-        alert('A state was submitted: ' + name + ' ' + code + ' ' + selectedCountry);
-        event.preventDefault(); //! prevents page reload
     }
 
     return (
@@ -73,7 +80,7 @@ const AddNewState = observer(() => {
                             message: 'State Code can only include letters.',
                         },
                         {
-                            pattern: /^[a-zA-Z]{2,3}$/,
+                            pattern: /^[a-zA-Z0-9]{2,3}$/,
                             message: 'State Code must be between two to three characters.',
                         }
                     ]}>
@@ -83,10 +90,11 @@ const AddNewState = observer(() => {
                     label="Country"
                     name="country"
                     rules={[
-                        {
-                            required: true,
-                            message: 'Please select a Country!',
-                        }
+                        () => ({
+                            validator(_,) {
+                                return isSelectionValid();
+                            },
+                        }),
                     ]}>
                     <LocationSelect onRefreshRequest={countryStore.loadFromApi} onLocationChange={onCountryChange} locationData={countryStore.countries} locationType="country" />
                 </Form.Item>

@@ -73,7 +73,7 @@ const AddNewCountry = observer(() => {
                             message: 'Country Code can only include letters.',
                         },
                         {
-                            pattern: /^[a-zA-Z]{2,3}$/,
+                            pattern: /^[a-zA-Z0-9]{2,3}$/,
                             message: 'Country Code must be between two to three characters.',
                         },
                         () => ({

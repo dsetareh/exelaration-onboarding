@@ -24,7 +24,7 @@ const LocationBrowser = observer(() => {
     //* Load countries on first render
     useEffect(() => {
         loadCountryData();
-    }, [loadCountryData]);
+    }, [countryStore.countries]);
 
     const onCountryChange = async (id: number) => {
 
