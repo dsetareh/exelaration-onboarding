@@ -6,12 +6,25 @@ import { useContext } from 'react'
 import { configStore } from '../stores'
 
 
+
 const AddNewCountry = observer(() => {
 
     const countryStore = useContext(configStore);
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
+
+    const isCodeUnique = (code: string) => {
+        console.log(`Validate ${code}`);
+        let codeIndex:number = countryStore.countries.findIndex(c => c.code === code);
+
+        if (codeIndex === -1) {
+            return Promise.resolve();
+        }
+        else {
+            return Promise.reject(`${countryStore.countries[codeIndex].name} already uses that Country Code.`);
+        }
+    };
 
 
 
@@ -23,7 +36,7 @@ const AddNewCountry = observer(() => {
     }
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        countryStore.addCountry({name: name, code: code});
+        countryStore.addCountry({ name: name, code: code });
         alert('A country was submitted: ' + name + ' ' + code);
         event.preventDefault(); //! prevents page reload
     }
@@ -39,9 +52,13 @@ const AddNewCountry = observer(() => {
                             required: true,
                             message: 'Please input a Country Name!',
                         },
+                        {
+                            pattern: /^[a-zA-Z\s]+$/,
+                            message: 'Country Name can only include letters and whitespace.',
+                        }
                     ]}
-                    >
-                    <Input  onChange={handleNameChange}/>
+                >
+                    <Input onChange={handleNameChange} />
                 </Form.Item>
                 <Form.Item
                     label="Code"
@@ -51,8 +68,21 @@ const AddNewCountry = observer(() => {
                             required: true,
                             message: 'Please input a Country Code!',
                         },
+                        {
+                            pattern: /^[a-zA-Z]+$/,
+                            message: 'Country Code can only include letters.',
+                        },
+                        {
+                            pattern: /^[a-zA-Z]{2,3}$/,
+                            message: 'Country Code must be between two to three characters.',
+                        },
+                        () => ({
+                            validator(_, value) {
+                                return isCodeUnique(value);
+                            },
+                        }),
                     ]}>
-                    <Input  onChange={handleCodeChange}/>
+                    <Input onChange={handleCodeChange} />
                 </Form.Item>
                 <Form.Item>
                     <Button type="primary" htmlType="submit">
