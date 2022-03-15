@@ -53,6 +53,10 @@ const AddNewState = observer(() => {
                             required: true,
                             message: 'Please input a State Name!',
                         },
+                        {
+                            pattern: /^[a-zA-Z\s]+$/,
+                            message: 'State Name can only include letters and whitespace.',
+                        }
                     ]}>
                     <Input onChange={handleNameChange} />
                 </Form.Item>
@@ -64,6 +68,14 @@ const AddNewState = observer(() => {
                             required: true,
                             message: 'Please input a State Code!',
                         },
+                        {
+                            pattern: /^[a-zA-Z]+$/,
+                            message: 'State Code can only include letters.',
+                        },
+                        {
+                            pattern: /^[a-zA-Z]{2,3}$/,
+                            message: 'State Code must be between two to three characters.',
+                        }
                     ]}>
                     <Input onChange={handleCodeChange} />
                 </Form.Item>
@@ -74,7 +86,7 @@ const AddNewState = observer(() => {
                         {
                             required: true,
                             message: 'Please select a Country!',
-                        },
+                        }
                     ]}>
                     <LocationSelect onRefreshRequest={countryStore.loadFromApi} onLocationChange={onCountryChange} locationData={countryStore.countries} locationType="country" />
                 </Form.Item>
