@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { LocationSelect } from './LocationSelect';
-import { Card, Form, Input, Button } from 'antd';
+import { Card, Form, Input, Button, Alert } from 'antd';
 
 import { observer } from 'mobx-react-lite'
 import { useContext } from 'react'
@@ -9,6 +9,8 @@ import { configStore } from '../stores'
 const AddNewState = observer(() => {
 
     const countryStore = useContext(configStore);
+
+    const [submissionResult, setSubmissionResult] = useState(0);
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
@@ -46,11 +48,29 @@ const AddNewState = observer(() => {
                 countryId: selectedCountry
             })
         })
-            .then(response => response.json())
+            .then(response => {
+                setSubmissionResult(response.status);
+                return response.json();
+            })
     }
 
     return (
         <Card className="databox" title="Add New State">
+            {/* 409 Response */}
+            {(submissionResult === 409) ? <Alert
+                message="Error adding new state (Code already exists). Please try again."
+                type="error"
+                showIcon
+            /> : null}
+
+            {/* 201 Response */}
+            {(submissionResult === 201) ? <Alert
+                message="Added new State!"
+                type="success"
+                showIcon
+            /> : null}
+
+            <br />
             <Form onFinish={handleSubmit}>
                 <Form.Item
                     label="Name"
@@ -99,7 +119,7 @@ const AddNewState = observer(() => {
                     <LocationSelect onRefreshRequest={countryStore.loadFromApi} onLocationChange={onCountryChange} locationData={countryStore.countries} locationType="country" />
                 </Form.Item>
                 <Form.Item>
-                    <Button type="primary" htmlType="submit">
+                    <Button type="primary" htmlType="submit" >
                         Submit
                     </Button>
                 </Form.Item>
