@@ -1,62 +1,97 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Card, Form, Input, Button } from 'antd';
+
+import { observer } from 'mobx-react-lite'
+import { useContext } from 'react'
+import { configStore } from '../stores'
 
 
-interface IAddNewCountryProps {
-    apiUrl: string;
-}
 
-interface IAddNewCountryState {
-    name: string;
-    code: string;
-}
+const AddNewCountry = observer(() => {
 
-export class AddNewCountry extends React.Component<IAddNewCountryProps, IAddNewCountryState> {
-    constructor(props: IAddNewCountryProps) {
-        super(props);
-        this.state = {
-            name: '',
-            code: ''
-        };
+    const countryStore = useContext(configStore);
+
+    const [name, setName] = useState('');
+    const [code, setCode] = useState('');
+
+    const isCodeUnique = (code: string) => {
+        console.log(`Validate ${code}`);
+        let codeIndex:number = countryStore.countries.findIndex(c => c.code === code);
+
+        if (codeIndex === -1) {
+            return Promise.resolve();
+        }
+        else {
+            return Promise.reject(`${countryStore.countries[codeIndex].name} already uses that Country Code.`);
+        }
+    };
+
+
+
+    const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setName(event.target.value);
     }
-    handleNameChange = (event:React.ChangeEvent<HTMLInputElement>)  => {
-        this.setState({ name: event.target.value });
+    const handleCodeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setCode(event.target.value);
     }
-    handleCodeChange = (event:React.ChangeEvent<HTMLInputElement>) =>{
-        this.setState({ code: event.target.value });
-    }
-    handleSubmit = (event:React.FormEvent<HTMLFormElement>) => {
-        fetch(this.props.apiUrl + 'countries/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                name: this.state.name,
-                code: this.state.code,
-            })
-        })
-            .then(response => response.json())
-            .then(data => {
-                //! push new country up to parent here eventually
-            })
-        alert('A country was submitted: ' + this.state.name + ' ' + this.state.code);
+
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        countryStore.addCountry({ name: name, code: code });
+        alert('A country was submitted: ' + name + ' ' + code);
         event.preventDefault(); //! prevents page reload
     }
 
-    render() {
-        return (
-            <div className="databox">
-                <h4>Add New Country</h4>
-                <form onSubmit={this.handleSubmit}>
-                    <label>
-                        <h5>Country Name:</h5>
-                        <input type="text" value={this.state.name} onChange={this.handleNameChange} /><br />
-                        <h5>Country Code:</h5>
-                        <input type="text" value={this.state.code} onChange={this.handleCodeChange} /><br />
-                    </label>
-                    <input type="submit" value="Submit" />
-                </form>
-            </div>
-        );
-    }
-}
+    return (
+        <Card className="databox" title="Add New Country">
+            <Form onFinish={handleSubmit}>
+                <Form.Item
+                    label="Name"
+                    name="name"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input a Country Name!',
+                        },
+                        {
+                            pattern: /^[a-zA-Z\s]+$/,
+                            message: 'Country Name can only include letters and whitespace.',
+                        }
+                    ]}
+                >
+                    <Input onChange={handleNameChange} />
+                </Form.Item>
+                <Form.Item
+                    label="Code"
+                    name="code"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input a Country Code!',
+                        },
+                        {
+                            pattern: /^[a-zA-Z]+$/,
+                            message: 'Country Code can only include letters.',
+                        },
+                        {
+                            pattern: /^[a-zA-Z]{2,3}$/,
+                            message: 'Country Code must be between two to three characters.',
+                        },
+                        () => ({
+                            validator(_, value) {
+                                return isCodeUnique(value);
+                            },
+                        }),
+                    ]}>
+                    <Input onChange={handleCodeChange} />
+                </Form.Item>
+                <Form.Item>
+                    <Button type="primary" htmlType="submit">
+                        Submit
+                    </Button>
+                </Form.Item>
+            </Form>
+        </Card>
+    );
+});
+
+export default AddNewCountry;

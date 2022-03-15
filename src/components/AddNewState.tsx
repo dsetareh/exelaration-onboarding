@@ -1,69 +1,104 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { LocationSelect } from './LocationSelect';
+import { Card, Form, Input, Button } from 'antd';
 
-interface IAddNewStateProps {
-    countryData: ICountry[];
-    apiUrl: string;
-}
+import { observer } from 'mobx-react-lite'
+import { useContext } from 'react'
+import { configStore } from '../stores'
 
-interface IAddNewStateState {
-    name: string;
-    code: string;
-    selectedCountry: number;
-}
+const AddNewState = observer(() => {
 
-export class AddNewState extends React.Component<IAddNewStateProps, IAddNewStateState> {
-    constructor(props: IAddNewStateProps) {
-        super(props);
-        this.state = {
-            name: '',
-            code: '',
-            selectedCountry: 0
-        };
+    const countryStore = useContext(configStore);
+
+    const [name, setName] = useState('');
+    const [code, setCode] = useState('');
+    const [selectedCountry, setSelectedCountry] = useState(0);
+
+    const onCountryChange = (id: number) => {
+        setSelectedCountry(id);
+    }
+    const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setName(event.target.value);
+    }
+    const handleCodeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setCode(event.target.value);
     }
 
-    onCountryChange = (id: number)  => {
-        this.setState({ selectedCountry: id });
-    }
-    handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({ name: event.target.value });
-    }
-    handleCodeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({ code: event.target.value });
-    }
-    handleSubmit = (event: React.FormEvent<HTMLFormElement>)  => {
-        fetch(this.props.apiUrl + 'states/', {
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        //! handle validation here?
+        fetch(countryStore.apiUrl + 'states/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                name: this.state.name,
-                code: this.state.code,
-                countryId: this.state.selectedCountry
+                name: name,
+                code: code,
+                countryId: selectedCountry
             })
         })
             .then(response => response.json())
-        alert('A state was submitted: ' + this.state.name + ' ' + this.state.code + ' ' + this.state.selectedCountry);
+        alert('A state was submitted: ' + name + ' ' + code + ' ' + selectedCountry);
         event.preventDefault(); //! prevents page reload
     }
 
-    render() {
-        return (
-            <div className="databox">
-                <h4>Add New State</h4>
-                <form onSubmit={this.handleSubmit}>
-                    <label>
-                        <h5>Name:</h5>
-                        <input type="text" value={this.state.name} onChange={this.handleNameChange} /><br />
-                        <h5>Code:</h5>
-                        <input type="text" value={this.state.code} onChange={this.handleCodeChange} /><br />
-                    </label>
-                    {this.state.selectedCountry === 0 ? <h5>Select a country: </h5> : <h5>Selected: {this.state.selectedCountry} </h5>}
-                    <LocationSelect onLocationChange={this.onCountryChange} locationData={this.props.countryData} locationType="country" />
-                    <input type="submit" value="Submit" />
-                </form>
-            </div>
-        );
-    }
-}
+    return (
+        <Card className="databox" title="Add New State">
+            <Form onFinish={handleSubmit}>
+                <Form.Item
+                    label="Name"
+                    name="name"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input a State Name!',
+                        },
+                        {
+                            pattern: /^[a-zA-Z\s]+$/,
+                            message: 'State Name can only include letters and whitespace.',
+                        }
+                    ]}>
+                    <Input onChange={handleNameChange} />
+                </Form.Item>
+                <Form.Item
+                    label="Code"
+                    name="code"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input a State Code!',
+                        },
+                        {
+                            pattern: /^[a-zA-Z]+$/,
+                            message: 'State Code can only include letters.',
+                        },
+                        {
+                            pattern: /^[a-zA-Z]{2,3}$/,
+                            message: 'State Code must be between two to three characters.',
+                        }
+                    ]}>
+                    <Input onChange={handleCodeChange} />
+                </Form.Item>
+                <Form.Item
+                    label="Country"
+                    name="country"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please select a Country!',
+                        }
+                    ]}>
+                    <LocationSelect onRefreshRequest={countryStore.loadFromApi} onLocationChange={onCountryChange} locationData={countryStore.countries} locationType="country" />
+                </Form.Item>
+                <Form.Item>
+                    <Button type="primary" htmlType="submit">
+                        Submit
+                    </Button>
+                </Form.Item>
+
+            </Form>
+        </Card>
+    );
+});
+
+export default AddNewState;

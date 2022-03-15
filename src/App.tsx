@@ -1,52 +1,91 @@
-import React from 'react';
-import './App.css';
-import { LocationBrowser } from './components/LocationBrowser';
-import { AddNewCountry } from './components/AddNewCountry';
-import { AddNewState } from './components/AddNewState';
-import { Utils } from './Utils';
+import React, { useState } from 'react';
+
+import './App.less';
+import LocationBrowser from './components/LocationBrowser';
+import AddNewCountry from './components/AddNewCountry';
+import AddNewState from './components/AddNewState';
+import { PageHeader, Menu } from 'antd';
+
+import { observer } from 'mobx-react-lite'
+
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Link,
+} from "react-router-dom";
+
+import {
+  MenuUnfoldOutlined,
+  MenuFoldOutlined,
+  FlagOutlined,
+  GlobalOutlined
+} from '@ant-design/icons';
+
+const { SubMenu } = Menu;
 
 
-const API_URL = 'https://xc-countries-api.herokuapp.com/api/';
+
+const App = observer(() => {
+
+  const [collapsed, setCollapsed] = useState(false);
 
 
+  const toggleCollapsed = (): void => {
+    setCollapsed(!collapsed);
+  };
 
-interface IStateData {
-  countryData: ICountry[];
-}
+  return (
+    <div className="App">
+      <PageHeader
+        className="site-page-header"
+        title="CountryAPI"
+        subTitle="Browse and submit countries and states"
+        backIcon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+        onBack={toggleCollapsed}
+      />
 
-class App extends React.Component<any, IStateData> {
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      countryData: []
-    };
-  }
-
-
-
-  // grab api data and sort it before passing it down to components
-  componentDidMount = async () => {
-    let response = await fetch(`${API_URL}countries`);
-    let countries: ICountry[] = await response.json()
-    countries.sort(Utils.compareLocation);
-    this.setState({ countryData: countries });
-
-  }
-
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <p>Country API</p>
-        </header>
-        <div className="input-area">
-          <LocationBrowser apiUrl={API_URL} countryData={this.state.countryData} />
-          <AddNewCountry apiUrl={API_URL} />
-          <AddNewState apiUrl={API_URL} countryData={this.state.countryData} />
-        </div>
+<BrowserRouter>
+      <div style={{ width: 256 }}>
+        <Menu
+          defaultSelectedKeys={['1']}
+          defaultOpenKeys={['sub1']}
+          mode="inline"
+          theme="light"
+          inlineCollapsed={collapsed}
+        >
+          <Menu.Item key="1" icon={<GlobalOutlined />}>
+            <Link to="/">
+              <span>Location Browser</span>
+            </Link>
+          </Menu.Item>
+          <SubMenu key="sub1" icon={<FlagOutlined />} title="Add new locations">
+            <Menu.Item key="2">
+              <Link to="/add/country">
+                <span>Countries</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="3">
+              <Link to="/add/state">
+                <span>States</span>
+              </Link>
+            </Menu.Item>
+          </SubMenu>
+        </Menu>
       </div>
-    );
-  }
-}
+
+
+      
+        <Routes>
+          <Route path="/" element={<LocationBrowser />} />
+          <Route path="add/country" element={<AddNewCountry />} />
+          <Route path="add/state" element={<AddNewState />} />
+        </Routes>
+      </BrowserRouter>
+
+    </div>
+  );
+
+})
 
 export default App;
